@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext, useCallback } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
+import { AuthContext } from '../Contexts/AuthContext';
+import firebaseApp from '../config';
 
 function Copyright() {
   return (
@@ -50,10 +52,26 @@ const useStyles = makeStyles((theme) => ({
 
 //<span>Photo by <a href="https://unsplash.com/@erikhathaway?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Erik Hathaway</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
-const SignIn = (props) => {
-  const { history } = props;
+const SignIn = ({ history }) => {
   const classes = useStyles();
+  const { currentUser } = useContext(AuthContext)
 
+  const handleSignIn = useCallback(async event => {
+    event.preventDefault();
+    const { email, password } = event.target.elements;
+    try {
+      await firebaseApp
+        .auth()
+        .signInWithEmailAndPassword(email.value, password.value);
+      history.push("/");
+    } catch (error) {
+      alert(error)
+    }
+  }, [history])
+
+  if (currentUser) {
+    return  <Redirect to={"/"}/>
+  }
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -66,7 +84,7 @@ const SignIn = (props) => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={handleSignIn}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField

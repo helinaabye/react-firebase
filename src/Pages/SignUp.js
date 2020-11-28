@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router-dom";
-
+import firebaseApp from '../config';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -49,10 +49,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const SignUp = (props) => {
-  const { history } = props;
+const SignUp = ({ history }) => {
   const classes = useStyles();
 
+  const handleSignUp = useCallback(async (event) => {
+    event.preventDefault();
+    const { firstName, lastName, email, password } = event.target.elements;
+    try {
+      await firebaseApp
+        .auth()
+        .createUserWithEmailAndPassword(email.value, password.value)
+    } catch (error) {
+      alert(error)
+    }
+    
+    firebaseApp.auth().currentUser.updateProfile({
+      displayName: `${firstName.value} ${lastName.value}`
+    })
+    .then(history.push("/"))
+    .catch(error => {alert(error)});
+  }, [history])
+
+  
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -65,30 +83,30 @@ const SignUp = (props) => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate>  
+          <form className={classes.form} noValidate onSubmit={(event, inputs) => handleSignUp(event, inputs)}>  
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                />
+                    <TextField
+                      autoComplete="fname"
+                      name="firstName"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="firstName"
+                      label="First Name"
+                      autoFocus
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                />
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="lastName"
+                      label="Last Name"
+                      name="lastName"
+                      autoComplete="lname"
+                  />
                 </Grid>
                 <Grid item xs={12}>
                 <TextField
