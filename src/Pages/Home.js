@@ -1,35 +1,34 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../Contexts/AuthContext';
 import { Route, Redirect } from 'react-router-dom';
-import { Button, CircularProgress, Container } from '@material-ui/core';
-import firebaseApp from '../config';
+import { CssBaseline } from '@material-ui/core';
+import Footer from './Footer';
+import Header from './Header';
+import Landing from './Landing';
 
 const Home = (props) => {
   const { currentUser } = useContext(AuthContext)
   // const [loading, setLoading] = React.useState(true);
 
   return (
-    <Container>
+    <>
       {/* {loading ? (<CircularProgress/>) : ( */}
         <Route
         {...props}
         render={() => 
          !!currentUser ? (
-         <div>
-           <p>Hello {currentUser.displayName}</p> 
-           <Button
-           variant="contained"
-           color="primary"
-           onClick={() => firebaseApp.auth().signOut()}>
-             Sign Out
-           </Button>
-         </div>
+           <>
+          <CssBaseline />
+          <Header/>
+          <Landing/>
+           <Footer/>
+           </>
          ) : 
          (<Redirect to={"/sign in"}/>)
          }
          />
       {/* ) } */}
-    </Container>     
+    </>     
   );
 }
 

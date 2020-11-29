@@ -5,20 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router-dom";
 import firebaseApp from '../config';
 import { AuthContext } from '../Contexts/AuthContext';
-
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Travel BNB
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from './Copyright';
 
 const useStyles = makeStyles((theme) => ({
   root: {
