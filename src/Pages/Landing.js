@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, CssBaseline, Grid, Typography } from '@material-ui/core';
+import { Button, Container, CssBaseline, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TravelCard from './TravelCard';
 import classnames from 'classnames';
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     height: "25vh",
   },
   footerImg: {
-    backgroundImage: 'url(https://unsplash.com/photos/kNVxJ_vFcEs/download?force=true&w=1920)',
+    backgroundImage: 'url(https://unsplash.com/photos/37V_a2zE4C4/download?force=true&w=1920)',
     height: "50vh",
   },
   position: {
@@ -56,6 +56,12 @@ const Landing = () => {
                     <Typography variant="h5" align="center" color="textSecondary" component="p">
                     Find welcoming hosts that will take you to the places you wish to travel.
                     </Typography>
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={null}>
+                      Post a request
+                    </Button>
                 </Container>
               </Grid>
               <Grid item xs={12} sm={6} className={classes.position}>
@@ -78,6 +84,12 @@ const Landing = () => {
                     <Typography variant="h5" align="center" color="textSecondary" component="p">
                     Show someone the special places you know by hosting and getting paid.
                     </Typography>
+                    <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={null}>
+                      Post an offer
+                    </Button>
                 </Container>
               </Grid>
             </Grid>

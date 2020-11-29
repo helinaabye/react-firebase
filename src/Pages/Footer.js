@@ -37,11 +37,11 @@ export default function Footer() {
           url: "#"
       },
       {
-          title: "Requests",
+          title: "Travel",
           url: "#"
       },
       {
-          title: "Hosts",
+          title: "Host",
           url: "#"
       },
       {
