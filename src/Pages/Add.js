@@ -1,11 +1,9 @@
-import React, { useContext, useCallback } from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import React from 'react';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Paper, Box, Grid, Typography, Link } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from '@material-ui/core/styles';
-import { withRouter, Redirect } from "react-router-dom";
-import { AuthContext } from '../Contexts/AuthContext';
+import { withRouter } from "react-router-dom";
 import Copyright from '../Components/Copyright';
-import firebaseApp from '../config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -38,41 +36,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//<span>Photo by <a href="https://unsplash.com/@erikhathaway?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Erik Hathaway</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
-
-const SignIn = ({ history }) => {
+const Add = (props) => {
   const classes = useStyles();
-  const { currentUser } = useContext(AuthContext)
+  const { history, match } = props;
+  const { params } = match;
+  const { type } = params;
 
-  const handleSignIn = useCallback(async event => {
-    event.preventDefault();
-    const { email, password } = event.target.elements;
-    try {
-      await firebaseApp
-        .auth()
-        .signInWithEmailAndPassword(email.value, password.value);
-      history.push("/");
-    } catch (error) {
-      alert(error)
-    }
-  }, [history])
-
-  if (currentUser) {
-    return  <Redirect to={"/"}/>
-  }
+  console.log(type)
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} className={classes.image}>
+      <Grid item container xs={12} sm={8} md={6} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <AddCircleIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {type === "travel" ? "Add Travel" : "Add Offer" }
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSignIn}>
+          <form className={classes.form} noValidate onSubmit={null}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -80,10 +63,10 @@ const SignIn = ({ history }) => {
                     margin="normal"
                     required
                     fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
+                    id="city"
+                    label={type === "travel" ? "What City in Ethiopia do you want to travel to?" : "What City in Ethiopia do you want to host in?" } 
+                    name="city"
+                    autoComplete="city"
                     autoFocus
                     />
                 </Grid>
@@ -93,17 +76,17 @@ const SignIn = ({ history }) => {
                     margin="normal"
                     required
                     fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
+                    name="description"
+                    label={type === "travel" ? "Please describe the experiences you wish to have" : "Please describe the experiences you wish to offer" } 
+                    type="description"
+                    id="description"
+                    autoComplete="description"
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
+                    label="Email me if anyone responds"
                     />
                 </Grid>
             </Grid>
@@ -114,19 +97,19 @@ const SignIn = ({ history }) => {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+            {type === "travel" ? "Submit Request" : "Submit Offer" }              
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+              <Grid item xs={6}>
+                <Link onClick={() => {history.push('/view')}} variant="body2">
+                    {type === "travel" ? "View Offers" : "View Requests" }    
                 </Link>
               </Grid>
-              <Grid item>
+              <Grid item xs={6}>
                 <Link 
-                onClick={() => {history.push('/sign up')}} 
+                onClick={() => {history.push('/')}} 
                 variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Back to Home"}
                 </Link>
               </Grid>
             </Grid>
@@ -134,10 +117,11 @@ const SignIn = ({ history }) => {
               <Copyright />
             </Box>
           </form>
-        </div>
+        </div>   
+      </Grid>
       </Grid>
     </Grid>
   );
 }
 
-export default withRouter(SignIn);
+export default withRouter(Add);

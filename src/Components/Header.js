@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Toolbar, Button, Typography} from '@material-ui/core';
+import { Toolbar, Button, Typography, Hidden } from '@material-ui/core';
 import firebaseApp from '../config';
 import { AuthContext } from '../Contexts/AuthContext';
 import { withRouter } from "react-router-dom";
@@ -20,11 +20,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     flexShrink: 0,
   },
+  padding: {
+    padding: theme.spacing(1),
+  },
 }));
 
-const Header = (props) => {
+const Header = ({ history }) => {
   const classes = useStyles();
-  const { history } = props;
   const { currentUser } = useContext(AuthContext)
 
   return (
@@ -32,7 +34,12 @@ const Header = (props) => {
       <Toolbar className={classes.toolbar}>
       {
            !!currentUser ? (
-            <Typography>Hello {currentUser.displayName}</Typography> 
+            <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {history.push('/view')}}>
+              See Posts
+            </Button>
             ) : (
               <Typography>Welcome</Typography> 
             )
@@ -44,17 +51,23 @@ const Header = (props) => {
           align="center"
           noWrap
           className={classes.toolbarTitle}
+          onClick={() => {history.push('/')}}
         >
           Travel B&amp;B
         </Typography>
         {
            !!currentUser ? (
-            <Button
-            variant="contained"
-            color="primary"
-            onClick={() => firebaseApp.auth().signOut()}>
-              Sign Out
-            </Button>
+            <>
+              <Hidden smDown>
+                <Typography className={classes.padding}>Hello {currentUser.displayName}</Typography>
+              </Hidden>
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => firebaseApp.auth().signOut()}>
+                Sign Out
+              </Button>
+            </>
             ) : (
               <Button
               variant="outlined"

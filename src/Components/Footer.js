@@ -2,18 +2,15 @@ import React from 'react';
 import { CssBaseline, Container, Toolbar, Link} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from './Copyright';
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column'
   },
-  main: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(2),
-  },
   footer: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(2, 1),
     marginTop: 'auto',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
@@ -28,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Footer() {
+const Footer = ({ history }) => {
   const classes = useStyles();
 
   const sections = [
@@ -62,7 +59,7 @@ export default function Footer() {
                     noWrap
                     key={section.title}
                     variant="body2"
-                    href={section.url}
+                    onClick={() => {history.push('/')}}
                     className={classes.toolbarLink}
                 >
                     {section.title}
@@ -75,3 +72,5 @@ export default function Footer() {
     </div>
   );
 }
+
+export default withRouter(Footer);

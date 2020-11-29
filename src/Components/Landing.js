@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Container, CssBaseline, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import TravelCard from './TravelCard';
+import Slide from './Slide';
 import classnames from 'classnames';
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   imageStyle: {
@@ -32,10 +33,14 @@ const useStyles = makeStyles((theme) => ({
   padding: {
     padding: theme.spacing(8, 0, 6),
   },
+  margin: {
+    margin: theme.spacing(2, 0, 1),
+  },
 }));
 
-const Landing = () => {
+const Landing = (props) => {
   const classes = useStyles();
+  const { history } = props;
 
   return (
            <>
@@ -47,25 +52,26 @@ const Landing = () => {
                 with Travel B&amp;B
                 </div>
             </Grid>
-            <Grid item container xs={12}  className={classes.padding}>
-              <Grid item xs={12} sm={6} className={classes.position}>
+            <Grid item container xs={12} className={classes.padding}>
+              <Grid item container sm={12} md={6} className={classes.position}>
                 <Container maxWidth="sm" component="main" className={classes.padding}>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                     Travel
                     </Typography>
-                    <Typography variant="h5" align="center" color="textSecondary" component="p">
+                    <Typography variant="h5" align="center" color="textPrimary" component="p">
                     Find welcoming hosts that will take you to the places you wish to travel.
                     </Typography>
                     <Button
                     variant="contained"
-                    color="primary"
-                    onClick={null}>
+                    color="primary" 
+                    className={classes.margin}
+                    onClick={() => {history.push('/add/travel')}}>
                       Post a request
                     </Button>
                 </Container>
               </Grid>
-              <Grid item xs={12} sm={6} className={classes.position}>
-                <TravelCard/>
+              <Grid item sm={12} md={6} className={classes.position}>
+                <Slide type={"travel"}/>
               </Grid>
             </Grid>
             <Grid item xs={12}>
@@ -73,11 +79,11 @@ const Landing = () => {
                 </div>
             </Grid>
             <Grid item container xs={12}  className={classes.padding}>
-              <Grid item xs={12} sm={6} className={classes.position}>
-                <TravelCard/>
+              <Grid item sm={12} md={6} className={classes.position}>
+                <Slide type={"host"}/>
               </Grid>
-              <Grid item xs={12} sm={6} className={classes.position}>
-                <Container maxWidth="sm" component="main" className={classes.heroContent}>
+              <Grid item container sm={12} md={6} className={classes.position}>
+                <Container maxWidth="sm" component="main" className={classes.padding}>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                     Host
                     </Typography>
@@ -87,7 +93,8 @@ const Landing = () => {
                     <Button
                     variant="contained"
                     color="secondary"
-                    onClick={null}>
+                    className={classes.margin}
+                    onClick={() => {history.push('/add/offer')}}>
                       Post an offer
                     </Button>
                 </Container>
@@ -103,4 +110,4 @@ const Landing = () => {
   );
 }
 
-export default Landing;
+export default withRouter(Landing);

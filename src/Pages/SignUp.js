@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router-dom";
 import firebaseApp from '../config';
 import { AuthContext } from '../Contexts/AuthContext';
-import Copyright from './Copyright';
+import Copyright from '../Components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
   root: {
