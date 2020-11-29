@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 400,
     flexGrow: 1,
   },
+  color: {
+    color: "grey"
+  },
   header: {
     display: 'flex',
     alignItems: 'center',
@@ -127,7 +130,7 @@ function Slide(props) {
       >
         {type === "travel" ? (
           travel.map((step, index) => (
-          <div key={type}>
+          <div key={type} className={classes.color} >
             {Math.abs(activeStep - index) <= 2 ? (
               <img className={classes.img} src={step.imgPath} alt={step.label} />
             ) : null}
@@ -135,7 +138,7 @@ function Slide(props) {
         ))
         ) : (
           host.map((step, index) => (
-            <div key={type}>
+            <div key={type} className={classes.color} >
               {Math.abs(activeStep - index) <= 2 ? (
                 <img className={classes.img} src={step.imgPath} alt={step.label} />
               ) : null}
@@ -150,13 +153,13 @@ function Slide(props) {
         variant="text"
         activeStep={activeStep}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+          <Button className={classes.color} size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
             Next
             {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
           </Button>
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+          <Button className={classes.color} size="small" onClick={handleBack} disabled={activeStep === 0}>
             {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
             Back
           </Button>
