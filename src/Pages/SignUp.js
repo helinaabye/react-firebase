@@ -1,9 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router-dom";
 import firebaseApp from '../config';
+import { AuthContext } from '../Contexts/AuthContext';
+
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -51,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = ({ history }) => {
   const classes = useStyles();
+  const { setCurrentUser } = useContext(AuthContext)
 
   const handleSignUp = useCallback(async (event) => {
     event.preventDefault();
@@ -66,9 +70,12 @@ const SignUp = ({ history }) => {
     firebaseApp.auth().currentUser.updateProfile({
       displayName: `${firstName.value} ${lastName.value}`
     })
-    .then(history.push("/"))
+    .then(() => {
+      setCurrentUser({...firebaseApp.auth().currentUser, displayName: `${firstName.value} ${lastName.value}`})
+      history.push("/")
+    })
     .catch(error => {alert(error)});
-  }, [history])
+  }, [history, setCurrentUser])
 
   
   return (
